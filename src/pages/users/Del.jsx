@@ -19,7 +19,7 @@ export default function Del() {
         const u = await getUser(id);
         setItem(u);
       } catch (e) {
-        setErr(e?.response?.data?.message || e.message || "Hiba betöltéskor");
+        setErr(e?.response?.data?.message || "Nem sikerült betölteni az adatokat.");
       } finally {
         setLoading(false);
       }
@@ -33,7 +33,7 @@ export default function Del() {
       await deleteUser(id);
       nav("/users");
     } catch (e) {
-      setErr(e?.response?.data?.message || e.message || "Hiba törléskor");
+      setErr(e?.response?.data?.message || "Nem sikerült törölni.");
     } finally {
       setDeleting(false);
     }
@@ -42,9 +42,8 @@ export default function Del() {
   return (
     <div className="container py-4">
       <div className="d-flex align-items-center justify-content-between mb-3">
-        <h2 className="m-0 text-danger">Törlés</h2>
+        <h2 className="m-0">Törlés</h2>
         <Link className="btn btn-outline-secondary" to={`/users/${id}`}>
-          <i className="bi bi-arrow-left me-2" />
           Vissza
         </Link>
       </div>
@@ -54,22 +53,20 @@ export default function Del() {
       {loading ? (
         <div className="text-muted">Töltés…</div>
       ) : !item ? (
-        <div className="alert alert-warning">Nincs ilyen user.</div>
+        <div className="alert alert-warning">A felhasználó nem található.</div>
       ) : (
-        <div className="card shadow-sm border-danger">
+        <div className="card shadow-sm">
           <div className="card-body">
-            <div className="fw-bold fs-5">{item.name}</div>
+            <div className="fw-bold">{item.name}</div>
             <div className="text-muted">{item.email}</div>
-            <div className="small text-muted mt-2">id: {item.id}</div>
 
             <div className="alert alert-warning mt-3 mb-3">
-              Biztos törlöd? A visszaút csak a lelkiismeretedben létezik.
+              Biztosan törölni szeretnéd ezt a felhasználót?
             </div>
 
             <div className="d-flex gap-2">
               <button className="btn btn-danger" onClick={onDelete} disabled={deleting}>
-                <i className="bi bi-trash3 me-2" />
-                {deleting ? "Törlés…" : "Igen, töröld"}
+                {deleting ? "Törlés…" : "Törlés"}
               </button>
               <Link className="btn btn-outline-secondary" to="/users">
                 Mégse
